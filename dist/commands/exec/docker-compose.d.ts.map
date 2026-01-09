@@ -1,1 +1,0 @@
-{"version":3,"file":"docker-compose.d.ts","sourceRoot":"","sources":["../../../src/commands/exec/docker-compose.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,OAAO,EAAiB,oBAAoB,EAAE,MAAM,yBAAyB,CAAC;AAG9E,wBAAsB,oBAAoB,CACzC,UAAU,EAAE,IAAI,GAAG,MAAM,GAAG,OAAO,GAAG,MAAM,GAAG,IAAI,GAAG,MAAM,EAC5D,OAAO,GAAE,oBAAyB,GAChC,OAAO,CAAC,IAAI,CAAC,CA6Cf"}
