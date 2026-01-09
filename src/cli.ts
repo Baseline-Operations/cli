@@ -7,31 +7,31 @@ import { getCommandName } from "@baseline/core/utils";
 import { ConfigManager } from "@baseline/core/config";
 
 // Import CLI command wrappers
-import { initCommand } from "./commands/workspace/init.js";
-import { addCommand } from "./commands/workspace/add.js";
-import { cloneCommand } from "./commands/git/clone.js";
-import { syncCommand } from "./commands/git/sync.js";
-import { statusCommand } from "./commands/git/status.js";
-import { branchCommand } from "./commands/git/branch.js";
-import { prCreateCommand } from "./commands/git/pr.js";
-import { configCommand } from "./commands/workspace/config.js";
-import { graphCommand } from "./commands/workspace/graph.js";
-import { doctorCommand } from "./commands/workspace/doctor.js";
-import { execCommand } from "./commands/exec/exec.js";
-import { testCommand } from "./commands/exec/test.js";
-import { lintCommand } from "./commands/exec/lint.js";
-import { startCommand } from "./commands/exec/start.js";
-import { watchCommand } from "./commands/exec/watch.js";
-import { dockerComposeCommand } from "./commands/exec/docker-compose.js";
-import { linkCommand } from "./commands/development/link.js";
-import { releaseCommand } from "./commands/development/release.js";
+import { initCommand } from "./commands/workspace/init";
+import { addCommand } from "./commands/workspace/add";
+import { cloneCommand } from "./commands/git/clone";
+import { syncCommand } from "./commands/git/sync";
+import { statusCommand } from "./commands/git/status";
+import { branchCommand } from "./commands/git/branch";
+import { prCreateCommand } from "./commands/git/pr";
+import { configCommand } from "./commands/workspace/config";
+import { graphCommand } from "./commands/workspace/graph";
+import { doctorCommand } from "./commands/workspace/doctor";
+import { execCommand } from "./commands/exec/exec";
+import { testCommand } from "./commands/exec/test";
+import { lintCommand } from "./commands/exec/lint";
+import { startCommand } from "./commands/exec/start";
+import { watchCommand } from "./commands/exec/watch";
+import { dockerComposeCommand } from "./commands/exec/docker-compose";
+import { linkCommand } from "./commands/development/link";
+import { releaseCommand } from "./commands/development/release";
 import {
 	pluginInstallCommand,
 	pluginListCommand,
 	pluginRemoveCommand,
 	pluginInstallAllCommand,
 	pluginSearchCommand,
-} from "./commands/plugin/plugin.js";
+} from "./commands/plugin/plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
