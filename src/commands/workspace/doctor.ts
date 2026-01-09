@@ -17,12 +17,10 @@ export async function doctorCommand(
 		}
 
 		// Log all messages
-		let currentCategory = "";
 		for (const msg of result.messages) {
 			if (msg.type === "info") {
 				if (msg.category === "title") {
 					Logger.title(msg.message);
-					currentCategory = msg.message;
 				} else {
 					Logger.info(msg.message);
 				}

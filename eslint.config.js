@@ -23,7 +23,13 @@ export default tseslint.config(
 		},
 	},
 	{
-		ignores: ['dist/**', 'node_modules/**', '**/*.test.ts', '**/__tests__/**'],
+		ignores: ['dist/**', 'node_modules/**', '**/*.test.ts', '**/__tests__/**', 'eslint.config.js'],
+	},
+	{
+		files: ['eslint.config.js'],
+		languageOptions: {
+			parserOptions: {},
+		},
 	}
 );
 

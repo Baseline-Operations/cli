@@ -1,17 +1,17 @@
 /**
- * CLI wrapper for clone command
+ * CLI wrapper for project-init command
  */
-import { cloneRepositories } from "@baseline/core/commands";
+import { initProjectConfigs, ProjectInitOptions } from "@baseline/core/commands";
 import { Logger } from "@baseline/core/utils";
 
-export async function cloneCommand(): Promise<void> {
-	Logger.title("Cloning Repositories");
-
+export async function projectInitCommand(
+	options: ProjectInitOptions = {}
+): Promise<void> {
 	try {
-		const result = await cloneRepositories();
+		const result = await initProjectConfigs(options);
 
 		if (!result.success && result.totalRepos === 0) {
-			Logger.error(result.messages[0]?.message || "Failed to clone repositories");
+			Logger.error(result.messages[0]?.message || "Failed to initialize project configs");
 			process.exit(1);
 			return;
 		}
@@ -19,7 +19,7 @@ export async function cloneCommand(): Promise<void> {
 		// Log all messages
 		for (const msg of result.messages) {
 			if (msg.type === "info") {
-				if (msg.message.includes("Summary")) {
+				if (msg.message.includes("Summary") || msg.message.includes("Initializing")) {
 					Logger.title(msg.message);
 				} else {
 					Logger.info(msg.message);
@@ -30,6 +30,8 @@ export async function cloneCommand(): Promise<void> {
 				Logger.error(msg.message);
 			} else if (msg.type === "warn") {
 				Logger.warn(msg.message);
+			} else if (msg.type === "dim") {
+				Logger.dim(msg.message);
 			}
 		}
 
@@ -38,7 +40,7 @@ export async function cloneCommand(): Promise<void> {
 		}
 	} catch (error) {
 		Logger.error(
-			`Failed to clone repositories: ${error instanceof Error ? error.message : String(error)}`
+			`Failed to initialize project configs: ${error instanceof Error ? error.message : String(error)}`
 		);
 		process.exit(1);
 	}
