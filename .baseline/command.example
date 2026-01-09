@@ -1,0 +1,23 @@
+# Baseline Command Name Configuration
+#
+# This file demonstrates how to configure the baseline command name.
+# To use a custom command name:
+#
+# 1. Copy this file to 'command' (without .example) in your workspace root:
+#    cp packages/cli/.baseline/command.example .baseline/command
+#
+# 2. Edit .baseline/command and set your desired command name:
+#    echo "mybaseline" > .baseline/command
+#
+# 3. The command name is automatically loaded when you run baseline commands.
+#
+# Alternatively, set the BASELINE_COMMAND environment variable:
+#    export BASELINE_COMMAND=mybaseline
+#
+# Priority order:
+# 1. BASELINE_COMMAND environment variable
+# 2. .baseline/command file (git-ignored)
+# 3. Default: "bl"
+#
+# Note: .baseline/command is git-ignored, so it won't be committed to your repository.
+# Each developer can have their own command name preference.

@@ -1,0 +1,8 @@
+{
+  "name": "cli",
+  "library": false,
+  "commands": {
+    "test": "vitest run",
+    "lint": "eslint ."
+  }
+}
