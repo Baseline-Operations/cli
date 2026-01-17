@@ -1,25 +1,26 @@
 /**
- * CLI wrapper for lint command
+ * CLI wrapper for test command
  */
-import { runLint, LintOptions } from "@baseline/core/commands";
-import { Logger } from "@baseline/core/utils";
+import { runTests, TestOptions } from "@baseline/core/commands";
+import { Logger } from "../../utils";
 
-export async function lintCommand(
-	options: LintOptions = {}
+export async function testCommand(
+	options: TestOptions = {}
 ): Promise<void> {
 	try {
-		const result = await runLint(options);
+		const result = await runTests(options);
 
-		if (!result.success && result.totalRepos === 0) {
-			Logger.error(result.messages[0]?.message || "Failed to run lint");
+		if (!result.success && result.messages && result.messages.length > 0) {
+			Logger.error(result.messages[0]?.message || "Failed to run tests");
 			process.exit(1);
 			return;
 		}
 
 		// Log all messages
-		for (const msg of result.messages) {
+		if (result.messages) {
+			for (const msg of result.messages) {
 			if (msg.type === "info") {
-				if (msg.message.includes("Running Linters")) {
+				if (msg.message.includes("Running Tests")) {
 					Logger.title(msg.message);
 				} else {
 					Logger.info(msg.message);
@@ -33,6 +34,7 @@ export async function lintCommand(
 			} else if (msg.type === "dim") {
 				Logger.dim(msg.message);
 			}
+			}
 		}
 
 		if (!result.success) {
@@ -40,7 +42,7 @@ export async function lintCommand(
 		}
 	} catch (error) {
 		Logger.error(
-			`Failed to run lint: ${error instanceof Error ? error.message : String(error)}`
+			`Failed to run tests: ${error instanceof Error ? error.message : String(error)}`
 		);
 		process.exit(1);
 	}

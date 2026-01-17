@@ -2,7 +2,7 @@
  * CLI wrapper for graph command
  */
 import { generateGraph, GraphOptions } from "@baseline/core/commands";
-import { Logger } from "@baseline/core/utils";
+import { Logger } from "../../utils";
 
 export async function graphCommand(
 	options: GraphOptions = {}
@@ -11,13 +11,14 @@ export async function graphCommand(
 		const result = await generateGraph(options);
 
 		if (!result.success) {
-			Logger.error(result.messages[0]?.message || "Failed to generate graph");
+			Logger.error(result.messages?.[0]?.message || "Failed to generate graph");
 			process.exit(1);
 			return;
 		}
 
 		// Log all messages
-		for (const msg of result.messages) {
+		if (result.messages) {
+			for (const msg of result.messages) {
 			if (msg.type === "info") {
 				if (msg.message === "Dependency Graph") {
 					Logger.title(msg.message);
@@ -33,6 +34,7 @@ export async function graphCommand(
 				Logger.error(msg.message);
 			} else if (msg.type === "warn") {
 				Logger.warn(msg.message);
+			}
 			}
 		}
 	} catch (error) {

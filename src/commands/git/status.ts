@@ -2,7 +2,7 @@
  * CLI wrapper for status command
  */
 import { getRepositoryStatus } from "@baseline/core/commands";
-import { Logger } from "@baseline/core/utils";
+import { Logger } from "../../utils";
 import chalk from "chalk";
 
 export async function statusCommand(): Promise<void> {
@@ -10,18 +10,18 @@ export async function statusCommand(): Promise<void> {
 		const result = await getRepositoryStatus();
 
 		if (!result.success) {
-			Logger.error(result.messages[0]?.message || "Failed to get repository status");
+			Logger.error(result.messages?.[0]?.message || "Failed to get repository status");
 			process.exit(1);
 			return;
 		}
 
 		// Log title
-		if (result.messages.length > 0 && result.messages[0].message === "Repository Status") {
+		if (result.messages && result.messages.length > 0 && result.messages[0].message === "Repository Status") {
 			Logger.title("Repository Status");
 		}
 
 		// Log each repo status
-		for (const repo of result.repos) {
+		for (const repo of result.items) {
 			if (repo.notCloned) {
 				Logger.log(
 					chalk.gray(`${repo.name}: ${chalk.red("not cloned")}`)
@@ -50,7 +50,7 @@ export async function statusCommand(): Promise<void> {
 		}
 
 		// Log any additional error messages
-		for (const msg of result.messages) {
+		for (const msg of result.messages || []) {
 			if (msg.type === "error" && msg.message !== "Repository Status") {
 				Logger.error(msg.message);
 			}

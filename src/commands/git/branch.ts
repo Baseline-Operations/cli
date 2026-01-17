@@ -2,7 +2,7 @@
  * CLI wrapper for branch command
  */
 import { branchRepositories, BranchOptions } from "@baseline/core/commands";
-import { Logger } from "@baseline/core/utils";
+import { Logger } from "../../utils";
 
 export async function branchCommand(
 	branchName: string,
@@ -11,20 +11,20 @@ export async function branchCommand(
 	try {
 		const result = await branchRepositories(branchName, options);
 
-		if (!result.success && result.errors > 0) {
-			Logger.error(result.messages[0]?.message || "Failed to process branches");
+		if (!result.success && result.failed > 0) {
+			Logger.error(result.messages?.[0]?.message || "Failed to process branches");
 			process.exit(1);
 			return;
 		}
 
 		// Log title
-		const titleMsg = result.messages.find((m) => m.message.includes("branch:"));
+		const titleMsg = result.messages?.find((m) => m.message.includes("branch:"));
 		if (titleMsg) {
 			Logger.title(titleMsg.message);
 		}
 
 		// Log all messages
-		for (const msg of result.messages) {
+		for (const msg of result.messages || []) {
 			if (msg.type === "info") {
 				if (msg.message.includes("Summary")) {
 					Logger.title(msg.message);

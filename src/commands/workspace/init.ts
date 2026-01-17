@@ -3,10 +3,12 @@
  * Imports the core function and handles CLI-specific concerns (logging, exit codes)
  */
 import { initWorkspace, InitOptions } from "@baseline/core/commands";
-import { Logger } from "@baseline/core/utils";
+import { Logger } from "../../utils";
 import { getCommandName } from "@baseline/core/utils";
 
-export async function initCommand(options: InitOptions = {}): Promise<void> {
+export async function initCommand(
+	options: InitOptions = {}
+): Promise<void> {
 	Logger.title("Baseline Workspace Setup");
 
 	try {
@@ -34,7 +36,9 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
 		Logger.log(
 			`  2. Run \`${commandName} clone\` to clone all repositories`
 		);
-		Logger.log("  3. Run `baseline status` to check repository status");
+		Logger.log(
+			"  3. Run `baseline status` to check repository status"
+		);
 	} catch (error) {
 		Logger.error(
 			`Failed to initialize workspace: ${error instanceof Error ? error.message : String(error)}`
@@ -42,4 +46,3 @@ export async function initCommand(options: InitOptions = {}): Promise<void> {
 		process.exit(1);
 	}
 }
-

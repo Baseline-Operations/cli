@@ -2,7 +2,7 @@
  * CLI wrapper for watch command
  */
 import { watchRepositories, WatchOptions } from "@baseline/core/commands";
-import { Logger } from "@baseline/core/utils";
+import { Logger } from "../../utils";
 
 export async function watchCommand(
 	options: WatchOptions = {}
@@ -26,14 +26,15 @@ export async function watchCommand(
 
 		const result = await watchRepositories(watchOptions);
 
-		if (!result.success && result.totalRepos === 0) {
+		if (!result.success && result.messages && result.messages.length > 0) {
 			Logger.error(result.messages[0]?.message || "Failed to watch repositories");
 			process.exit(1);
 			return;
 		}
 
 		// Log all messages
-		for (const msg of result.messages) {
+		if (result.messages) {
+			for (const msg of result.messages) {
 			if (msg.type === "info") {
 				if (msg.message.includes("Watching Library Repositories") || msg.message.includes("Watch Active")) {
 					Logger.title(msg.message);
@@ -49,9 +50,10 @@ export async function watchCommand(
 			} else if (msg.type === "dim") {
 				Logger.dim(msg.message);
 			}
+			}
 		}
 
-		if (result.watchingCount === 0) {
+		if (!result.data || result.data.watchingCount === 0) {
 			// No watchers to keep alive
 			if (!result.success) {
 				process.exit(1);
@@ -59,10 +61,12 @@ export async function watchCommand(
 			return;
 		}
 
+		const watchData = result.data;
+
 		// Keep process alive and handle SIGINT
 		process.on("SIGINT", async () => {
 			Logger.info("\nStopping watchers...");
-			await result.cleanup();
+			await watchData.cleanup();
 			Logger.success("All watchers stopped");
 			process.exit(0);
 		});

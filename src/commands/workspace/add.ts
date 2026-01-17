@@ -2,7 +2,7 @@
  * CLI wrapper for add command
  */
 import { addRepository, AddRepositoryOptions } from "@baseline/core/commands";
-import { Logger } from "@baseline/core/utils";
+import { Logger } from "../../utils";
 import { ConfigManager } from "@baseline/core/config";
 
 export async function addCommand(
@@ -19,15 +19,29 @@ export async function addCommand(
 		});
 
 		if (!result.success) {
-			Logger.error("Failed to add repository:");
-			result.errors?.forEach((err) => Logger.error(`  ${err}`));
+			Logger.error("Failed to add repository/package:");
+			if (result.messages) {
+				result.messages.forEach((msg) => {
+					if (msg.type === "error") {
+						Logger.error(`  ${msg.message}`);
+						// Show suggestion if available
+						if (msg.suggestion) {
+							Logger.info(`  💡 ${msg.suggestion}`);
+						}
+					}
+				});
+			} else if (result.errors) {
+				result.errors.forEach((err) => Logger.error(`  ${err}`));
+			}
 			process.exit(1);
 			return;
 		}
 
-		Logger.success(`Added repository: ${result.repo.name}`);
-		Logger.info(`  URL: ${result.repo.gitUrl}`);
-		Logger.info(`  Path: ${result.repo.path}`);
+		if (result.data) {
+			Logger.success(`Added repository: ${result.data.name}`);
+			Logger.info(`  URL: ${result.data.gitUrl || result.data.location}`);
+			Logger.info(`  Path: ${result.data.path}`);
+		}
 	} catch (error) {
 		Logger.error(
 			`Failed to add repository: ${error instanceof Error ? error.message : String(error)}`

@@ -2,7 +2,7 @@
  * CLI wrapper for doctor command
  */
 import { doctorCheck, DoctorOptions } from "@baseline/core/commands";
-import { Logger } from "@baseline/core/utils";
+import { Logger } from "../../utils";
 
 export async function doctorCommand(
 	options: DoctorOptions = {}
@@ -10,14 +10,15 @@ export async function doctorCommand(
 	try {
 		const result = await doctorCheck(options);
 
-		if (!result.success && result.messages.length === 1 && result.messages[0].type === "error") {
+		if (!result.success && result.messages && result.messages.length === 1 && result.messages[0].type === "error") {
 			Logger.error(result.messages[0].message);
 			process.exit(1);
 			return;
 		}
 
 		// Log all messages
-		for (const msg of result.messages) {
+		if (result.messages) {
+			for (const msg of result.messages) {
 			if (msg.type === "info") {
 				if (msg.category === "title") {
 					Logger.title(msg.message);
@@ -30,6 +31,7 @@ export async function doctorCommand(
 				Logger.error(msg.message);
 			} else if (msg.type === "warn") {
 				Logger.warn(msg.message);
+			}
 			}
 		}
 

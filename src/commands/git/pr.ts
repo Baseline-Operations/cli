@@ -2,7 +2,7 @@
  * CLI wrapper for PR create command
  */
 import { createPullRequests, PrCreateOptions } from "@baseline/core/commands";
-import { Logger } from "@baseline/core/utils";
+import { Logger } from "../../utils";
 
 export async function prCreateCommand(
 	options: PrCreateOptions = {}
@@ -10,9 +10,9 @@ export async function prCreateCommand(
 	try {
 		const result = await createPullRequests(options);
 
-		if (!result.success && result.created === 0 && result.errors === 0) {
+		if (!result.success && (!result.data || (result.data.created === 0 && result.data.failed === 0))) {
 			// No workspace or no provider
-			for (const msg of result.messages) {
+			for (const msg of result.messages || []) {
 				if (msg.type === "error") {
 					Logger.error(msg.message);
 				} else if (msg.type === "info") {
@@ -24,7 +24,7 @@ export async function prCreateCommand(
 		}
 
 		// Log all messages
-		for (const msg of result.messages) {
+		for (const msg of result.messages || []) {
 			if (msg.type === "info") {
 				if (msg.message.includes("Summary")) {
 					Logger.title(msg.message);
