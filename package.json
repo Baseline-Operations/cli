@@ -9,7 +9,7 @@
 		"baseline": "./dist/cli.js"
 	},
 	"scripts": {
-		"build": "tsc",
+		"build": "tsup",
 		"clean": "rm -rf dist",
 		"dev": "tsx src/cli.ts",
 		"test": "vitest run",
@@ -31,14 +31,17 @@
 	"dependencies": {
 		"@baseline/core": "workspace:*",
 		"chalk": "^5.3.0",
-		"commander": "^11.1.0"
+		"commander": "^11.1.0",
+		"ora": "^9.0.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.2",
 		"@types/node": "^20.10.6",
 		"eslint": "^9.39.2",
+		"tsup": "^8.5.1",
 		"tsx": "^4.7.0",
 		"typescript": "^5.3.3",
-		"typescript-eslint": "^8.52.0"
+		"typescript-eslint": "^8.52.0",
+		"vitest": "^1.0.0"
 	}
 }
